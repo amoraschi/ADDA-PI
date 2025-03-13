@@ -6,3 +6,6 @@ Con este repositorio me centro por ahora en los Algoritmos Genéticos, pero tamb
 
 > [!WARNING]
 > Estos algoritmos no garantizan la solución óptima, los errores no están normalizados
+
+> [!IMPORTANT]
+> Los algoritmos necesitan las funciones auxiliares de [adda_v4](https://github.com/migueltoro/adda_v4)
