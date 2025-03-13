@@ -1,0 +1,31 @@
+head section
+
+Integer getNumCursos()
+Integer getNumAreas()
+Integer getCoste(Integer)
+Integer getArea(Integer)
+Integer getRelevancia(Integer)
+Integer getDuracion(Integer)
+Integer getPresupuestoTotal()
+
+Integer courses = getNumCursos()
+Integer areas = getNumAreas()
+Integer total = getPresupuestoTotal()
+
+goal section
+
+max sum(getRelevancia(course) selected[course], course in 0 .. courses)
+
+constraints section
+
+sum(selected[course], course in 0 .. courses | getArea(course) = area) - 1 >= 0, area in 0 .. areas
+
+sum(selected[course], course in 0 .. courses | getArea(course) = 0) - sum(selected[course], course in 0 .. courses | getArea(course) != 0) >= 0
+
+sum(getDuracion(course) selected[course], course in 0 .. courses) - sum(20 selected[course], course in 0 .. courses) >= 0
+
+sum(getCoste(course) selected[course], course in 0 .. courses) <= total
+
+bin
+
+selected[course], course in 0 .. courses

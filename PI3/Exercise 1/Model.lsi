@@ -1,0 +1,28 @@
+head section
+
+Integer getNumProductos()
+Integer getNumAlmacenes()
+Integer getMetrosCubicosAlmacen(Integer)
+Integer getMetrosCubicosProducto(Integer)
+
+Boolean sonIncompatibles(Integer i, Integer j)
+Integer esIncompatible(Integer i, Integer j)
+
+Integer numProducts = getNumProductos()
+Integer numWarehouses = getNumAlmacenes()
+
+goal section
+
+max sum(x[i,j], i in 0 .. numProducts, j in 0 .. numWarehouses)
+
+constraints section
+
+sum(getMetrosCubicosProducto(i) x[i,j], i in 0 .. numProducts) - getMetrosCubicosAlmacen(j) <= 0, j in 0 .. numWarehouses
+
+sum(x[i,j], j in 0 .. numWarehouses) - 1 <= 0, i in 0 .. numProducts
+
+x[i,j] + x[z,j] <= 1, i in 0 .. numProducts, z in 0 .. numProducts, j in 0 .. numWarehouses | esIncompatible(i, z) = 1
+
+bin
+
+x[i,j], i in 0 .. numProducts, j in 0 .. numWarehouses
