@@ -4,5 +4,5 @@ Muchas gracias a [@RodriguezLaraRafa](https://github.com/RodriguezLaraRafa) y su
 
 Con este repositorio me centro por ahora en los Algoritmos Genéticos, pero también he subido los modelos de Programación Lineal Entera.
 
-> **Warning** <br/>
-Estos algoritmos no garantizan la solución óptima, los errores no están normalizados
+> [!WARNING]
+> Estos algoritmos no garantizan la solución óptima, los errores no están normalizados
