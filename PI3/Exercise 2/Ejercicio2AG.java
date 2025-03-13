@@ -109,7 +109,7 @@ public class Ejercicio2AG implements BinaryData<SolucionCursos> {
 			error++;
 		}
 		
-		return goal - 10000 * Math.pow(error, 2);
+		return goal - 10000 * error;
 	}
 	
 	public Ejercicio2AG (String file) {
