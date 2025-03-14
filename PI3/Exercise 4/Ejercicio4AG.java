@@ -1,10 +1,8 @@
 package ejercicio4;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import us.lsi.ag.SeqNormalData;
 import us.lsi.ag.agchromosomes.ChromosomeFactory.ChromosomeType;
@@ -31,79 +29,102 @@ public class Ejercicio4AG implements SeqNormalData<SolucionEstaciones> {
 		Double error = 0.;
 		
 		Integer numStations = DatosEstaciones.numEstaciones();
-		Integer numSections = DatosEstaciones.numTramos();
 		
-		List<Integer> visitedStations = new ArrayList<>();
+		// Default values
+		Integer station = 0;
+		Integer nextStation = 0;
 		
 		for (int i = 0; i < (ls.size() - 1); i++) {
-			Integer station = ls.get(i);
-			Integer nextStation = ls.get(i + 1);
+			station = ls.get(i);
+			nextStation = ls.get(i + 1);
 			
-			if (!DatosEstaciones.estanConectados(station, nextStation)) {
-				continue;
-			}
-			
+			if (DatosEstaciones.estanConectados(station, nextStation)) {
+				goal += DatosEstaciones.tiempoTramo(station, nextStation);
+			}	
+		}
+		
+		// Add loop to first station
+		station = ls.get(ls.size() - 1);
+		nextStation = ls.get(0);
+		
+		if (DatosEstaciones.estanConectados(station, nextStation)) {
 			goal += DatosEstaciones.tiempoTramo(station, nextStation);
 		}
 		
 		// Extra Restricion: Pairwise adjacent
 		for (int i = 0; i < (numStations - 1); i++) {
-			Integer station = ls.get(i);
-			Integer nextStation = ls.get(i + 1);
+			station = ls.get(i);
+			nextStation = ls.get(i + 1);
 			
 			if (!DatosEstaciones.estanConectados(station, nextStation)) {
-				error += 100;
+				error += 1000;
 			}
 		}
 		
-		// Get visited stations
-		for (int i = 0; i < numStations; i++) {
-			Integer station = ls.get(i);
-			
-			visitedStations.add(station);
-//			
-//			if (visitedStations.contains(station)) {
-//				error++;
-//			} else {
-//				visitedStations.add(station);
-//			}
-		}
+		// Add loop to first station
+		station = ls.get(ls.size() - 1);
+		nextStation = ls.get(0);
 		
-		Set<Integer> visitedStationsSet = visitedStations
-				.stream()
-				.collect(Collectors.toSet());
+		if (!DatosEstaciones.estanConectados(station, nextStation)) {
+			error += 1000;
+		}
 		
 		// Restriction: Pass through each station only once
-		if (visitedStations.size() != visitedStationsSet.size()) {
-			error++;
+		Set<Integer> visitedStations = new HashSet<>();
+		
+		for (int i = 0; i < numStations; i++) {
+			station = ls.get(i);
+			
+			if (!visitedStations.add(station)) {
+				error++;
+			}
 		}
 		
+		// Restriction: Selected section costs cannot exceed 3 / 4 of the totalCost
 		Double totalCost = DatosEstaciones.costeTotal();
 		Double selectedCost = 0.;
 		
 		for (int i = 0; i < (ls.size() - 1); i++) {
-			Integer station = ls.get(i);
-			Integer nextStation = ls.get(i + 1);
+			station = ls.get(i);
+			nextStation = ls.get(i + 1);
 			
 			if (DatosEstaciones.estanConectados(station, nextStation)) {
 				selectedCost += DatosEstaciones.costeTramo(station, nextStation);
 			}
 		}
 		
+		// Add loop to first station
+		station = ls.get(ls.size() - 1);
+		nextStation = ls.get(0);
+		
+		if (DatosEstaciones.estanConectados(station, nextStation)) {
+			selectedCost += DatosEstaciones.costeTramo(station, nextStation);
+		}
+		
 		if (selectedCost > ((3 / 4) * totalCost)) {
 			error++;
 		}
 		
+		// Restriction: There must be at least two adjacent stations with a satisfaction greater or equal than 7
 		Double calculatedSatisfaction = 0.;
 		
 		for (int i = 0; i < (ls.size() - 1); i++) {
-			Integer station = ls.get(i);
-			Integer nextStation = ls.get(i + 1);
+			station = ls.get(i);
+			nextStation = ls.get(i + 1);
 			
 			if (DatosEstaciones.estanConectados(station, nextStation)) {
 				calculatedSatisfaction += DatosEstaciones.satisfaccionClientes(station) +
 						DatosEstaciones.satisfaccionClientes(nextStation);
 			}
+		}
+
+		// Add loop to first station
+		station = ls.get(ls.size() - 1);
+		nextStation = ls.get(0);
+		
+		if (DatosEstaciones.estanConectados(station, nextStation)) {
+			calculatedSatisfaction += DatosEstaciones.satisfaccionClientes(station) +
+					DatosEstaciones.satisfaccionClientes(nextStation);
 		}
 		
 		if (calculatedSatisfaction < 14) {

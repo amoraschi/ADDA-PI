@@ -1,9 +1,7 @@
 package ejercicio1;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
-import us.lsi.ag.AuxiliaryAg;
 import us.lsi.ag.BinaryData;
 import us.lsi.ag.agchromosomes.ChromosomeFactory.ChromosomeType;
 

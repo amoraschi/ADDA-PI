@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import ejercicio3.Ejercicio3AG;
-import ejercicio3.SolucionFestival;
+import org.jgrapht.Graph;
+
 import us.lsi.ag.agchromosomes.AlgoritmoAG;
 import us.lsi.ag.agstopping.StoppingConditionFactory;
+import us.lsi.colors.GraphColors;
+import us.lsi.colors.GraphColors.Color;
+import us.lsi.graphs.views.SubGraphView;
 
 public class SolucionEstaciones {
 
@@ -40,10 +44,47 @@ public class SolucionEstaciones {
 			
 			this.numEstaciones++;
 			this.camino.add(DatosEstaciones.getEstacion(station));
+			
 			this.tiempoTotal += DatosEstaciones.tiempoTramo(station, nextStation);
 		}
 		
+		// Add last station
+		Integer lastStation = ls.get(ls.size() - 1);
+		
+		this.camino.add(DatosEstaciones.getEstacion(lastStation));
+		this.numEstaciones++;
+
+		// Add first station for full loop
+		Integer firstStation = ls.get(0);
+		
+		this.camino.add(DatosEstaciones.getEstacion(firstStation));
+		this.tiempoTotal += DatosEstaciones.tiempoTramo(lastStation, firstStation);
+		
 		this.tiempoMedio = this.tiempoTotal / this.numEstaciones;
+		
+		// Thanks to @RodriguezLaraRafa for the idea
+		Graph<Estacion, Tramo> graph = DatosEstaciones.getGrafo();
+		
+		List<Tramo> edges = IntStream
+				.range(0, this.camino.size() - 1)
+				.mapToObj(i -> graph.getEdge(this.camino.get(i), this.camino.get(i + 1)))
+				.toList();
+		
+		Graph<Estacion, Tramo> subGraph = SubGraphView.of(
+				graph,
+				v -> this.camino.contains(v),
+				e -> edges.contains(e)
+				);
+		
+		// Generates each solution but only the last one gets saved because the others get overwritten (DatosEntrada3.txt)
+		GraphColors.toDot(
+				graph,
+				"resources/salida/ejercicio4/graph.gv",
+				x -> x.nombre() + " - " + this.camino.indexOf(x),
+				x -> x.toString(),
+				v -> GraphColors.colorIf(Color.red, subGraph.containsVertex(v)),
+				e -> GraphColors.colorIf(Color.red, subGraph.containsEdge(e))
+				);
     }
     
     public static void main (String[] args) {

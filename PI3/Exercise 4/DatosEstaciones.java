@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 import us.lsi.common.String2;
@@ -28,6 +29,10 @@ public class DatosEstaciones {
 		tramos = g.edgeSet().stream().toList();
 		graph = g;
     }
+	
+	public static Graph<Estacion, Tramo> getGrafo () {
+		return graph;
+	}
 	
 	public static Estacion getEstacion (Integer i) {
 		return estaciones.get(i);
