@@ -20,7 +20,7 @@ constraints section
 
 sum(selected[course], course in 0 .. courses | getArea(course) = area) - 1 >= 0, area in 0 .. areas
 
-sum(selected[course], course in 0 .. courses | getArea(course) = 0) - sum(selected[course], course in 0 .. courses | getArea(course) != 0) >= 0
+sum(selected[course], course in 0 .. courses | getArea(course) = 0) - sum(selected[course], course in 0 .. courses | getArea(course) = a) >= 0, a in 1 .. areas
 
 sum(getDuracion(course) selected[course], course in 0 .. courses) - sum(20 selected[course], course in 0 .. courses) >= 0
 
