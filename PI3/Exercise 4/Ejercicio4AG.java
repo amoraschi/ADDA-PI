@@ -106,15 +106,18 @@ public class Ejercicio4AG implements SeqNormalData<SolucionEstaciones> {
 		}
 		
 		// Restriction: There must be at least two adjacent stations with a satisfaction greater or equal than 7
-		Double calculatedSatisfaction = 0.;
+		Boolean passesSatisfaction = false;
 		
 		for (int i = 0; i < (ls.size() - 1); i++) {
 			station = ls.get(i);
 			nextStation = ls.get(i + 1);
 			
 			if (DatosEstaciones.estanConectados(station, nextStation)) {
-				calculatedSatisfaction += DatosEstaciones.satisfaccionClientes(station) +
-						DatosEstaciones.satisfaccionClientes(nextStation);
+				if (DatosEstaciones.satisfaccionClientes(station) >= 7
+						&& DatosEstaciones.satisfaccionClientes(nextStation) >= 7) {
+					passesSatisfaction = true;
+					break;
+				}
 			}
 		}
 
@@ -123,11 +126,13 @@ public class Ejercicio4AG implements SeqNormalData<SolucionEstaciones> {
 		nextStation = ls.get(0);
 		
 		if (DatosEstaciones.estanConectados(station, nextStation)) {
-			calculatedSatisfaction += DatosEstaciones.satisfaccionClientes(station) +
-					DatosEstaciones.satisfaccionClientes(nextStation);
+			if (DatosEstaciones.satisfaccionClientes(station) >= 7
+					&& DatosEstaciones.satisfaccionClientes(nextStation) >= 7) {
+				passesSatisfaction = true;
+			}
 		}
 		
-		if (calculatedSatisfaction < 14) {
+		if (!passesSatisfaction) {
 			error++;
 		}
 		

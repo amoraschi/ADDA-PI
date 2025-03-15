@@ -72,6 +72,7 @@ public class Ejercicio1AG implements BinaryData<SolucionAlmacen> {
 			}
 		}
 		
+		// Incompatibility Restriction
 		for (int j = 0; j < numWarehouses; j++) {
 			for (int i = 0; i < numProducts; i++) {
 				Integer firstIndex = j * numProducts + i;
