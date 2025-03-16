@@ -17,9 +17,9 @@ max sum(x[i,j], i in 0 .. numProducts, j in 0 .. numWarehouses)
 
 constraints section
 
-sum(getMetrosCubicosProducto(i) x[i,j], i in 0 .. numProducts) - getMetrosCubicosAlmacen(j) <= 0, j in 0 .. numWarehouses
+sum(getMetrosCubicosProducto(i) x[i,j], i in 0 .. numProducts) <= getMetrosCubicosAlmacen(j) , j in 0 .. numWarehouses
 
-sum(x[i,j], j in 0 .. numWarehouses) - 1 <= 0, i in 0 .. numProducts
+sum(x[i,j], j in 0 .. numWarehouses) <= 1, i in 0 .. numProducts
 
 x[i,j] + x[z,j] <= 1, i in 0 .. numProducts, z in 0 .. numProducts, j in 0 .. numWarehouses | esIncompatible(i, z) = 1
 
