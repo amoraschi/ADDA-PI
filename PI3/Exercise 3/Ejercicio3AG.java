@@ -56,7 +56,7 @@ public class Ejercicio3AG implements ValuesInRangeData<Integer, SolucionFestival
 			sumOfArea = 0.;
 			
 			for (int type = 0; type < numTypes; type++) {
-				Integer curType = area * numTypes + type;
+				Integer curType = type * numAreas + area;
 				
 				sumOfArea += ls.get(curType);
 			}
@@ -71,7 +71,7 @@ public class Ejercicio3AG implements ValuesInRangeData<Integer, SolucionFestival
 			sumOfType = 0.;
 			
 			for (int area = 0; area < numAreas; area++) {
-				Integer curType = area * numTypes + type;
+				Integer curType = type * numAreas + area;
 				
 				sumOfType += ls.get(curType);
 			}
